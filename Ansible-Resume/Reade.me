@@ -1,0 +1,30 @@
+###READ.ME###
+
+Hi Reader,
+
+This Custom Plugin is to be used for following problem in ansible:
+
+Problem Statement: In a long and timetaking playbook execution, design and apply a plugin to resume the execution of playbook from last failed task instead of rerunning all the tasks again.
+
+Solution: 
+Design a plugin to manage and record all the plybook executed task and store it in a marker filed.
+Use --start-at-task option to resume execution of playbook from the specified task name.
+Following are conditions to apply this callback plugin to your Playbook
+a. No Dynamic Includes (If Possible Replace them with Static Includes/Imports)
+b. Use Unique Tasks Names to avoid conflicts and ambiguous redirections
+c. Maintain a playbook execution progress file (As mentioned in plugin playbook.inprogress)
+d. Maintain a copy of extra variables passed to the ansible playbook.
+
+Process: 
+a. Copy progression.py file to desired directory_path
+b. Export Following Ansible Variables
+        export ANSIBLE_CALLBACK_PLUGINS={directory_path}
+        export ANSIBLE_STDOUT_CALLBACK=progression
+c. Do not create the playbook.execution file, and remove old ones after successful execution only.
+d. Run the script with following options:
+	-p : playbook name
+	-i : inventory file
+	-r : use this option if playbook failed and needs to resume execution
+e. Please make sure to replace following values in bash script
+	log : set to log path
+	directory_path : set to directory path where pluging is copied; which in most cases would be pwd
